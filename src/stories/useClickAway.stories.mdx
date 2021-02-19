@@ -1,0 +1,237 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import Code from './assets/code-brackets.svg';
+import Colors from './assets/colors.svg';
+import Comments from './assets/comments.svg';
+import Direction from './assets/direction.svg';
+import Flow from './assets/flow.svg';
+import Plugin from './assets/plugin.svg';
+import Repo from './assets/repo.svg';
+import StackAlt from './assets/stackalt.svg';
+
+<Meta title='Docs/useClickAway' />
+
+<style>{`
+  .subheading {
+    --mediumdark: '#999999';
+    font-weight: 900;
+    font-size: 13px;
+    color: #999;
+    letter-spacing: 6px;
+    line-height: 24px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    margin-top: 40px;
+  }
+
+  .link-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 10px;
+  }
+
+  @media (min-width: 620px) {
+    .link-list {
+      row-gap: 20px;
+      column-gap: 20px;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media all and (-ms-high-contrast:none) {
+  .link-list {
+      display: -ms-grid;
+      -ms-grid-columns: 1fr 1fr;
+      -ms-grid-rows: 1fr 1fr;
+    }
+  }
+
+  .link-item {
+    display: block;
+    padding: 20px 30px 20px 15px;
+    border: 1px solid #00000010;
+    border-radius: 5px;
+    transition: background 150ms ease-out, border 150ms ease-out, transform 150ms ease-out;
+    color: #333333;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .link-item:hover {
+    border-color: #1EA7FD50;
+    transform: translate3d(0, -3px, 0);
+    box-shadow: rgba(0, 0, 0, 0.08) 0 3px 10px 0;
+  }
+
+  .link-item:active {
+    border-color: #1EA7FD;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .link-item strong {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .link-item img {
+    height: 40px;
+    width: 40px;
+    margin-right: 15px;
+    flex: none;
+  }
+
+  .link-item span {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .tip {
+    display: inline-block;
+    border-radius: 1em;
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: 700;
+    background: #E7FDD8;
+    color: #66BF3C;
+    padding: 4px 12px;
+    margin-right: 10px;
+    vertical-align: top;
+  }
+
+  .tip-wrapper {
+    font-size: 13px;
+    line-height: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+
+  .tip-wrapper code {
+    font-size: 12px;
+    display: inline-block;
+  }
+
+
+`}</style>
+
+# useSmartReducer hook
+
+<div className='subheading'>The Purpose</div>
+
+The goal with `useSmartReducer` hook is to remove verbosity of managing state contained in an JS Object `{}`.
+The hook provides similar usage pattern as React `useState` but under the hood it uses `useReducer`.
+
+<div className='subheading'>How it works</div>
+The hook returns array of `[state, setState]`. The setState function accepts two
+arguments (type, value), where:
+
+- `type` is the key of the state or custom reducer's action name,
+- `value` is the new value of the portion of the state defined by type.
+  setState returns new state as provided by custom reducer.
+
+Under the hood, the hook uses `baseReducer` which allows to mutate the state by providing the name of field which exists in the state.
+
+User can add or change the default behavior by implementing `customReducer`.
+
+<div className='subheading'>Rules of thumb</div>
+
+- If `customReducer` is not provided it will check if first argument of setState (action.type) matches with any key in the initialState.
+- If `action.type` matches with any field name in the state, then the hook will update the state with given second argument of setState (action.value).
+- If `action.type` does not match with any field name in the state, then the original state will be returned (no change) and console.error will be printed.
+- If `action.value` is not provided and customReducer is not given it will not change state.
+- If `customReducer` is provided and it returns `null` as a `default` case, then the baseReducer will be used as default.
+- If `customReducer` is provided and it returns `state` as a `default` case then baseReducer will not be used and state will be handled
+  exactly as per provided reducer (works as React useReducer). In this case user needs to implement all actions that were handled by baseReducer
+
+<div className='subheading'>Source code</div>
+
+<a
+	className='link-item'
+	href='https://github.com/stopyransky/fh-hooks/blob/master/src/useSmartReducer/useSmartReducer.ts'
+	target='_blank'
+>
+	<img src={Repo} alt='repo' />
+	<span>
+		<strong>fh-hooks: useSmartReducer</strong>
+		An alternative to React useReducer
+	</span>
+</a>
+
+<div className='subheading'>Examples</div>
+
+#### Simple use case
+
+`useSmartReducer` can be used without any reducer.
+
+```jsx
+const initialState = {
+	fieldName: 'value',
+};
+
+function MyComponent() {
+	const [state, setState] = useSmartReducer(initialState);
+
+	return (
+		<div>
+			<button
+				onClick={() => {
+					setState('fieldName', 'new value');
+				}}
+			>
+				click
+			</div>
+		</div>
+	);
+}
+```
+
+#### Custom reducer
+
+Adding custom reducer allows to include custom actions.
+
+Returning `null` in default case allows `baseReducer` to handle initialState fields cases.
+
+Returning `state` in default case will disable `baseReducer` so only actions defined in the custom reducer will affect the state.
+
+```jsx
+const initialState = {
+	firstName: 'Jane',
+	lastName: 'Doe',
+};
+
+function customReducer(state, action) {
+	switch (action.type) {
+		case 'name':
+			return {
+				firstName: action.value.firstName,
+				lastName: action.value.lastName,
+			};
+		default:
+			return null;
+	}
+}
+
+function MyComponent() {
+	const [state, setState] = useSmartReducer(initialState, customReducer);
+
+	return (
+		<div>
+			<button
+				onClick={() => {
+					setState('name', { firstName: 'John', lastName: 'Wayne' });
+				}}
+			>
+				click
+			</div>
+			<button
+				onClick={() => {
+					setState('firstName', 'John');
+					// will not work if customReducer default case returns state
+				}}
+			>
+				click
+			</div>
+		</div>
+	);
+}
+```

@@ -1,0 +1,10 @@
+.demo {
+	display: flex;
+	align-items: flex-start;
+	flex-flow: column nowrap;
+}
+
+.controls {
+	display: flex;
+	flex-flow: row nowrap;
+}
