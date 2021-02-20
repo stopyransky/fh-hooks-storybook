@@ -1,0 +1,17 @@
+.content {
+	border: 1px solid red;
+	display: flex;
+	padding: 5px;
+	justify-content: center;
+	align-items: center;
+}
+
+.button {
+	border: 1px solid green;
+	padding: 5px;
+}
+
+.container {
+	width: 150px;
+	border: 1px solid gray;
+}

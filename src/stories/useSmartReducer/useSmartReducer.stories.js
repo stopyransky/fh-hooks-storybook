@@ -16,7 +16,7 @@ const PrettyPrintJson = ({ data }) => {
 	);
 };
 
-storiesOf('useSmartReducer', module)
+storiesOf('Examples/useSmartReducer', module)
 	.add('No Reducer', () => {
 		const defaultState = { ...mockState };
 		const [state, setState] = useSmartReducer(defaultState);

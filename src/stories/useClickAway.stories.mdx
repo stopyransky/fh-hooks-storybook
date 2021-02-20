@@ -114,124 +114,34 @@ import StackAlt from './assets/stackalt.svg';
 
 `}</style>
 
-# useSmartReducer hook
+# useClickAway hook
 
 <div className='subheading'>The Purpose</div>
 
-The goal with `useSmartReducer` hook is to remove verbosity of managing state contained in an JS Object `{}`.
-The hook provides similar usage pattern as React `useState` but under the hood it uses `useReducer`.
+to do
 
 <div className='subheading'>How it works</div>
-The hook returns array of `[state, setState]`. The setState function accepts two
-arguments (type, value), where:
 
-- `type` is the key of the state or custom reducer's action name,
-- `value` is the new value of the portion of the state defined by type.
-  setState returns new state as provided by custom reducer.
-
-Under the hood, the hook uses `baseReducer` which allows to mutate the state by providing the name of field which exists in the state.
-
-User can add or change the default behavior by implementing `customReducer`.
+to do
 
 <div className='subheading'>Rules of thumb</div>
 
-- If `customReducer` is not provided it will check if first argument of setState (action.type) matches with any key in the initialState.
-- If `action.type` matches with any field name in the state, then the hook will update the state with given second argument of setState (action.value).
-- If `action.type` does not match with any field name in the state, then the original state will be returned (no change) and console.error will be printed.
-- If `action.value` is not provided and customReducer is not given it will not change state.
-- If `customReducer` is provided and it returns `null` as a `default` case, then the baseReducer will be used as default.
-- If `customReducer` is provided and it returns `state` as a `default` case then baseReducer will not be used and state will be handled
-  exactly as per provided reducer (works as React useReducer). In this case user needs to implement all actions that were handled by baseReducer
+to do
 
 <div className='subheading'>Source code</div>
 
 <a
 	className='link-item'
-	href='https://github.com/stopyransky/fh-hooks/blob/master/src/useSmartReducer/useSmartReducer.ts'
+	href='https://github.com/stopyransky/fh-hooks/blob/master/src/useClickAway/useClickAway.ts'
 	target='_blank'
 >
 	<img src={Repo} alt='repo' />
 	<span>
-		<strong>fh-hooks: useSmartReducer</strong>
-		An alternative to React useReducer
+		<strong>fh-hooks: useClickAway</strong>
+		The hook allows to react on clicking away of referenced element.
 	</span>
 </a>
 
 <div className='subheading'>Examples</div>
 
-#### Simple use case
-
-`useSmartReducer` can be used without any reducer.
-
-```jsx
-const initialState = {
-	fieldName: 'value',
-};
-
-function MyComponent() {
-	const [state, setState] = useSmartReducer(initialState);
-
-	return (
-		<div>
-			<button
-				onClick={() => {
-					setState('fieldName', 'new value');
-				}}
-			>
-				click
-			</div>
-		</div>
-	);
-}
-```
-
-#### Custom reducer
-
-Adding custom reducer allows to include custom actions.
-
-Returning `null` in default case allows `baseReducer` to handle initialState fields cases.
-
-Returning `state` in default case will disable `baseReducer` so only actions defined in the custom reducer will affect the state.
-
-```jsx
-const initialState = {
-	firstName: 'Jane',
-	lastName: 'Doe',
-};
-
-function customReducer(state, action) {
-	switch (action.type) {
-		case 'name':
-			return {
-				firstName: action.value.firstName,
-				lastName: action.value.lastName,
-			};
-		default:
-			return null;
-	}
-}
-
-function MyComponent() {
-	const [state, setState] = useSmartReducer(initialState, customReducer);
-
-	return (
-		<div>
-			<button
-				onClick={() => {
-					setState('name', { firstName: 'John', lastName: 'Wayne' });
-				}}
-			>
-				click
-			</div>
-			<button
-				onClick={() => {
-					setState('firstName', 'John');
-					// will not work if customReducer default case returns state
-				}}
-			>
-				click
-			</div>
-		</div>
-	);
-}
-```
+to do
