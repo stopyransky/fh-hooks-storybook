@@ -1,0 +1,15 @@
+language: 'node_js'
+node_js: '12'
+
+before_script:
+  - yarn build-storybook
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  local_dir: storybook-static
+  repo: stopyransky/fh-hooks-storybook
+  target_branch: gh-pages
+  on:
+    branch: master
