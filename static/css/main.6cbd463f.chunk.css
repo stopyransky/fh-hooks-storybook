@@ -1,0 +1,31 @@
+.content {
+	border: 1px solid red;
+	display: flex;
+	padding: 5px;
+	justify-content: center;
+	align-items: center;
+}
+
+.button {
+	border: 1px solid green;
+	padding: 5px;
+}
+
+.container {
+	width: 150px;
+	border: 1px solid gray;
+}
+
+.demo {
+	display: flex;
+	align-items: flex-start;
+	flex-flow: column nowrap;
+}
+
+.controls {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+
+/*# sourceMappingURL=main.6cbd463f.chunk.css.map*/
